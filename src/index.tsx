@@ -33,6 +33,7 @@ export const GoogleSignIn: React.FC<GoogleSignInProps> = ({
 }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [ready, setReady] = useState(false);
+    const promptCalled = useRef(false);
 
     const initGsi = useCallback(() => {
         const google = (window as any).google;
@@ -67,10 +68,11 @@ export const GoogleSignIn: React.FC<GoogleSignInProps> = ({
             } catch (_) { }
         }
 
-        // Prompt One Tap (safe to call multiple times)
-        if (autoPrompt) {
+        // Prompt One Tap (safe to call multiple times, but let's avoid it on every re-render)
+        if (autoPrompt && !promptCalled.current) {
             try {
                 google.accounts.id.prompt();
+                promptCalled.current = true;
             } catch (_) { }
         }
 
@@ -79,6 +81,9 @@ export const GoogleSignIn: React.FC<GoogleSignInProps> = ({
 
     useEffect(() => {
         if (!clientId) return; // not configured
+
+        // Reset prompt flag if clientId or autoPrompt changes significantly (though unlikely in this app)
+        // promptCalled.current = false; // We might not want to reset it on every render though.
 
         // If script already there, initialize immediately
         if (typeof window !== 'undefined' && (window as any).google) {
