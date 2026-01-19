@@ -1,7 +1,11 @@
 {
     "name": "@tarxemo/react-google-auth",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Flexible React component for Google Sign-In and One Tap",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tarxemo/react-google-sign-in.git"
+    },
     "main": "dist/index.js",
     "module": "dist/index.mjs",
     "types": "dist/index.d.ts",
